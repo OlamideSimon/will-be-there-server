@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
   app.enableCors({
-    origin: 'https://will-be-there-beige.vercel.app/',
+    origin: 'https://will-be-there-beige.vercel.app',
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['POST', 'GET', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     credentials: true,
