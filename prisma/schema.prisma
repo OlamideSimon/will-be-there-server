@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String      @id() @default(uuid())
+  name      String
+  email     String      @unique
+  password  String?
+  provider  OAuth_enum  @default(local)
+  events    Event[]
+  rsvps     rsvp[]
+
+  @@index([email])
+}
+
+model Event {
+  id             String       @id() @default(uuid())
+  name           String
+  date           DateTime
+  start          DateTime
+  end            DateTime
+  location       String?
+  media          Media[]
+  eventType      EventType    @default(inPerson)
+  expectedGifts  String[]
+  description    String
+
+  organizer      User         @relation(fields: [organizerId], references: [id], onDelete: Cascade)
+  organizerId    String
+
+  rsvps          rsvp[]
+
+  @@index([date])
+}
+
+model Media {
+  id            String       @id() @default(uuid())
+  eventId       String
+  cloudinaryId  String?
+  imageUrl      String
+
+  event         Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model rsvp {
+  id          String      @id() @default(uuid())
+  eventId     String
+  guestNames  String[]
+  email       String
+  name        String
+  notes       String?
+  registry    String[]
+  userId      String?
+  rsvpStatus  RsvpStatus  @default(attending)
+
+  event       Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user        User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+enum OAuth_enum {
+  local
+  google
+}
+
+enum RsvpStatus {
+  attending
+  notAttending
+  unsure
+}
+
+enum EventType {
+  virtual
+  inPerson
+}
