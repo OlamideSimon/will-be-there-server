@@ -103,9 +103,9 @@ export class EventsService {
       variables: {
         user: data.name,
         eventName: event.name,
-        eventDate: new Date(event.date).toDateString(),
-        startTime: new Date(event.start).toTimeString(),
-        endTime: new Date(event.end).toTimeString(),
+        eventDate: new Date(event.date).toLocaleDateString(),
+        startTime: new Date(event.start).toLocaleTimeString(),
+        endTime: new Date(event.end).toLocaleTimeString(),
         eventLocation: event.location,
         eventDescription: event.description,
         organizerName: event.organizer.name,
