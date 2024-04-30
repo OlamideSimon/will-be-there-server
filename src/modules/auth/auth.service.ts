@@ -136,7 +136,9 @@ export class AuthService {
         email: req.user.email,
       },
       include: {
-        rsvps: true,
+        rsvps: {
+          include: { event: true },
+        },
       },
     });
 

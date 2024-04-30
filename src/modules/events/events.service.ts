@@ -97,7 +97,7 @@ export class EventsService {
         });
       }
     }
-    const templateId = this.configService.get('RSVP_TEMPLATE_ID'); // get email template ID
+    const templateId = this.configService.get('RSVP_TEMPLATE_ID');
 
     await this.mailService.sendMail({
       variables: {
